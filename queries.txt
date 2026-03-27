@@ -1,23 +1,23 @@
--- Query 1
-SELECT
-    t24.title AS FILM_title_2024, t24.views AS FILM_views_2024,
-    t23.title AS FILM_title_2023, t23.views AS FILM_views_2023,
-    t22.title AS TV_title_2022, t22.views AS TV_views_2024,
-    t21.title AS TV_title_2021, t21.views AS TV_views_2023
-FROM TV_netflix2024 AS t24
-FULL JOIN TV_netflix20231 AS t23
-ON t24.title = t23.title
-FULL JOIN Fil_Netflix2024 AS t22
-ON t24.title = t22.title OR t23.title = t22.title
-FULL JOIN Film_netflix20231 AS t21
-ON t24.title = t21.title OR t23.title = t21.title OR t22.title = t21.title;
+    -- Query 1
+    SELECT
+        t24.title AS FILM_title_2024, t24.views AS FILM_views_2024,
+        t23.title AS FILM_title_2023, t23.views AS FILM_views_2023,
+        t22.title AS TV_title_2022, t22.views AS TV_views_2024,
+        t21.title AS TV_title_2021, t21.views AS Tv_views_2023
+    FROM TV_netflix2024 AS t24
+    FULL JOIN TV_netflix20231 AS t23
+        ON t24.title = t23.title
+    FULL JOIN fil_Netflix2024 AS t22
+        ON t24.title = t22.title OR t23.title = t22.title
+    FULL JOIN film_netflix20231 AS t21
+        ON t24.title = t21.title OR t23.title = t21.title OR t22.title = t21.title;
 
 -- Query 2
-SELECT title FROM tv-netflix20231
+SELECT title FROM TV_netflix20231
 WHERE title LIKE 'ONE PIECE%';
 
 -- Query 3
-SELECT title FROM TV-Netflix2024
+SELECT title FROM TV_Netflix2024
 WHERE available_global = 'yes';
 
 -- Query 4
@@ -34,7 +34,7 @@ SELECT title FROM Fil_Netflix2024;
 -- Query 7
 SELECT title
 FROM (SELECT title, views
-      FROM TV-netflix20231
+      FROM TV_netflix20231
       WHERE title LIKE 'ONE PIECE%'
       UNION ALL
       SELECT title, views
@@ -59,12 +59,12 @@ WHERE Runtime > 2;
 
 -- Query 11
 SELECT '2023' AS Año, title, views, Hours_viewed
-FROM TV-netflix20231
+FROM TV_netflix20231
 ORDER BY views DESC
 LIMIT 5
 UNION ALL
 SELECT * FROM (SELECT '2024' AS Año, title, views, Hours_viewed
-               FROM TV-netflix2024
+               FROM TV_netflix2024
                ORDER BY views DESC
                LIMIT 5);
 
@@ -90,7 +90,7 @@ CASE substr(release_date, 6, 2)
     WHEN '12' THEN 'December'
 END AS Mes,
 Count(*) AS total
-FROM Fil_netFlix 2024
+FROM Fil_netflix2024
 GROUP BY substr(release_date, 6, 2)
 ORDER BY total DESC
 LIMIT 2;
@@ -100,14 +100,14 @@ SELECT Count(*)
 FROM Film-netflix20231;
 
 -- Query 15
-SELECT * FROM TV-netflix20231
-FULL JOIN TV-netflix2024;
+SELECT * FROM TV_netflix20231
+FULL JOIN TV_netflix2024;
 
--- Query 16
-SELECT title, views
-FROM Film - netflix 2023 1
-ORDER BY views DESC
-LIMIT 10;
+    -- Query 16
+    SELECT title, views
+    FROM Film_netflix20231
+    ORDER BY views DESC
+    LIMIT 10;
 
 -- Query 17
 SELECT title, views
@@ -122,11 +122,11 @@ SELECT title,
 SUM(CAST(REPLACE(Views, ',', '') AS DECIMAL)) AS Vistas_totales
 FROM (SELECT Title, Views FROM TV_netflix20231
       UNION ALL
-      SELECT Title, Views FROM TV-netflix2024
+      SELECT Title, Views FROM TV_netflix2024
       UNION ALL
-      SELECT title, views FROM Film-netflix20231
+      SELECT title, views FROM Film_netflix20231
       UNION ALL
-      SELECT title, views FROM Fil-netflix2024)
+      SELECT title, views FROM Fil_netflix2024)
 AS todas_las_vistas
 GROUP BY title
 ORDER BY Vistas_totales DESC;
